@@ -1,0 +1,52 @@
+{% load staticfiles sekizai_tags %}
+<a class="popup-modal" href="#test-modal">Open modal</a>
+
+<div id="test-modal" class="white-popup-block mfp-hide">
+ <p class="mfp-close popup-modal-dismiss"><img src="{% static "django_mkpopup/images/close.png" %}" alt="Close" /></p>
+{% if instance.mkpopup.popup_image %}
+<a href="{{ instance.mkpopup.popup_url }}" class="image-link"><img src="{{ instance.mkpopup.popup_image.url }}" alt="{{ instance.mkpopup_name}}" /></a>
+{% else %}
+{{ instance.mkpopup.popup_content }}
+{% endif %}
+</div>
+
+
+<!-- Magnific Popup core CSS file -->
+<link rel="stylesheet" href="{% static "django_mkpopup/magnific-popup/magnific-popup.css" %}">
+{% addtoblock "js" %}<script src="{% static "django_mkpopup/magnific-popup/jquery.magnific-popup.min.js" %}"></script>
+<script>
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+    }
+    return "";
+}
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+$(function () {
+    if(!getCookie('popup')){
+	$('.popup-modal').magnificPopup({
+		type: 'inline',
+		preloader: false,
+		modal: true,
+		alignTop: true
+	}).magnificPopup('open');
+	$(document).on('click', '.popup-modal-dismiss', function (e) {
+		e.preventDefault();
+		$.magnificPopup.close();
+                setCookie('popup',"1",7);
+	});
+    }
+});
+</script>
+{% endaddtoblock %}
+
