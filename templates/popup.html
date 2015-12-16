@@ -40,6 +40,9 @@ $(function () {
 		modal: true,
 		alignTop: true
 	}).magnificPopup('open');
+        $(document).on('click', '#test-modal img', function(e){
+		setCookie('popup',"1",7);
+	});
 	$(document).on('click', '.popup-modal-dismiss', function (e) {
 		e.preventDefault();
 		$.magnificPopup.close();
